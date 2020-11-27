@@ -1,4 +1,4 @@
-const MongoURL =
-  "mongodb+srv://waseem6409:waseem6409@jwt-practice.dnquh.mongodb.net/backend-auth?retryWrites=true&w=majority";
+require("dotenv").config();
+const MongoURL = process.env.MONGO_URI;
 
 module.exports = MongoURL;
