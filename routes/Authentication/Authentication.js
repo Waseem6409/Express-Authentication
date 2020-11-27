@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const User = require("../../Models/User");
 const jwt = require("jsonwebtoken");
+const { checkUser } = require("../../middlewares/AuthenticationMiddleware");
 
 //Handle Errors
 
@@ -88,7 +89,13 @@ router.post("/signup", async (req, res, next) => {
 
 router.post("/logout", (req, res, next) => {
   res.cookie("jwt", "", { maxAge: 1 });
-  res.status(201).send("User is logged out");
+  res.status(200).send("User is logged out");
+});
+
+router.get("/user", async (req, res, next) => {
+  // const user = await User.findById(req.user.id).select("email");
+  // res.status(200).json({ UserEmail: user });
+  res.status(200).send("Email");
 });
 
 module.exports = router;

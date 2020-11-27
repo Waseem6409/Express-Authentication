@@ -8,10 +8,12 @@ var mongoose = require("mongoose");
 
 const authRouter = require("./routes/Authentication/Authentication");
 const MongoURL = require("./Config/MongoDB");
+const { checkUser } = require("./middlewares/AuthenticationMiddleware");
 
 var app = express();
 
-// view engine setup
+// View engine setup
+
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "jade");
 
@@ -22,27 +24,33 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 
+app.use("*", checkUser);
 app.use("/", authRouter);
 
 // MongoDB COnnection
+
 mongoose.set("useCreateIndex", true);
 mongoose.connect(MongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
 mongoose.connection.once("open", () => {
   console.log("MongoDb is Connected");
 });
 
-// catch 404 and forward to error handler
+// Catch 404 and forward to error handler
+
 app.use(function (req, res, next) {
   next(createError(404));
 });
 
-// error handler
+// Error handler
+
 app.use(function (err, req, res, next) {
-  // set locals, only providing error in development
+  // Set locals, only providing error in development
+
   res.locals.message = err.message;
   res.locals.error = req.app.get("env") === "development" ? err : {};
 
-  // render the error page
+  // Render the error page
+
   res.status(err.status || 500);
   res.render("error");
 });
