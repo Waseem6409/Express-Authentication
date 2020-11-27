@@ -6,7 +6,7 @@ const checkUser = (req, res, next) => {
     jwt.verify(token, "Waseem Munir Secret Diary", (err, decodedToken) => {
       if (err) {
         console.log(err.message);
-        res.status(401).json({ Message: "Token is invalid" });
+        return res.status(401).json({ Message: "Token is invalid" });
       } else {
         req.user = decodedToken;
         console.log("Token Verified");
@@ -14,7 +14,7 @@ const checkUser = (req, res, next) => {
       }
     });
   } else {
-    res.status(401).json({ Message: "No Token,Authorication Denied" });
+    return res.status(401).json({ Message: "No Token,Authorication Denied" });
   }
 };
 
